@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'eu.lucaventuri'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+
+sourceSets {
+    main {
+        java {
+            srcDirs '../jmacs/src/main/java'
+        }
+    }
+}
