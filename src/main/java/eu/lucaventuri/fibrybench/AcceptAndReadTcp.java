@@ -1,7 +1,6 @@
 package eu.lucaventuri.fibrybench;
 
 import eu.lucaventuri.common.Exceptions;
-import eu.lucaventuri.common.SystemUtils;
 import eu.lucaventuri.fibry.SinkActorSingleMessage;
 import eu.lucaventuri.fibry.Stereotypes;
 
@@ -11,17 +10,19 @@ import java.net.Socket;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class AcceptAndReadTcpThreads {
+public class AcceptAndReadTcp {
     public static void main(String[] args) throws Exception {
         int numRequests = 10_000;
         int numClients = 20;
 
+        boolean useFibers = BenchUtils.useFibers(args);
+        var configurator = BenchUtils.getConfigurator(useFibers);
         Stereotypes.setDebug(true);
 
-        SystemUtils.printTimeEx(() -> acceptConnectionsAndRead(numRequests, numClients, Stereotypes.threads()), "Ms required to create " + numRequests + " connections: ");
+        FibryBenchConfig.benchmark("Time required to create " + numRequests + " connections", () -> doBench(numRequests, numClients, configurator), 1);
     }
 
-    static void acceptConnectionsAndRead(int numRequests, int numClients, Stereotypes.NamedStereotype configurator) throws Exception {
+    static void doBench(int numRequests, int numClients, Stereotypes.NamedStereotype configurator) throws Exception {
         var requestsToCreate = new AtomicInteger(numRequests);
         var numErrors = new AtomicInteger(0);
         CountDownLatch latch = new CountDownLatch(numRequests);

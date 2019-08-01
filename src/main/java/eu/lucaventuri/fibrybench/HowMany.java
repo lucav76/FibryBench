@@ -4,15 +4,16 @@ import eu.lucaventuri.fibry.Stereotypes;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class HowManyThreads {
+public class HowMany {
     public static void main(String[] args) {
         AtomicInteger created = new AtomicInteger();
+        var configurator = BenchUtils.getConfigurator(args);
 
         try {
-            Stereotypes.threads().schedule(() -> System.out.println("Threads: " + created.get()), 250);
+            configurator.schedule(() -> System.out.println("Threads: " + created.get()), 250);
 
             while (true)
-                Stereotypes.threads().sink(created.incrementAndGet());
+                configurator.sink(created.incrementAndGet());
         }
         catch(Throwable e) {
             System.err.println(e);

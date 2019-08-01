@@ -6,8 +6,10 @@ import java.io.IOException;
 
 import static eu.lucaventuri.fibry.Stereotypes.HttpStringWorker;
 
-public class HttpHelloWorldThreads {
+public class HttpHelloWorld {
     public static void main(String[] args) throws IOException {
-        Stereotypes.threads().embeddedHttpServer(12345, new HttpStringWorker("/", e -> "Hello World!"));
+        var configurator = BenchUtils.getConfigurator(args);
+
+        configurator.embeddedHttpServer(12345, exchange -> "Hello World!");
     }
 }
